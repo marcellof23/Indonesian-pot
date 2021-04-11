@@ -2,7 +2,7 @@ image: ubuntu:20.04
 
 before_script:
     - ls
-    - apt-get update && apt-get install --yes python3.6 && sudo apt install --yes python3-pip
+    - apt-get update && apt-get install --yes python3.6 && apt install --yes python3-pip
     - pip install pipenv
 
 build-job:
