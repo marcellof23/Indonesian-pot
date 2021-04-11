@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pysimplegui = "*"
+pylint = "*"
 
 [dev-packages]
 

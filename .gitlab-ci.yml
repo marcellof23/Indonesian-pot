@@ -1,3 +1,5 @@
+image: alpine:latest
+
 build-job:
   stage: build
   script:
