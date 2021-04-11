@@ -3,7 +3,7 @@ image: alpine:latest
 build-job:
   stage: build
   script:
-    - echo "Hello, User!"
+    - echo "Hello, $GITLAB_USER_LOGIN!"
 
 test-job1:
   stage: test
