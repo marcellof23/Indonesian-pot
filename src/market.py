@@ -1,11 +1,7 @@
 import PySimpleGUI as sg
-from screeninfo import get_monitors
 
-monitor = get_monitors()[0]
-windowWidth , windowHeight = monitor.width, monitor.height 
-
-def marketDisplay():
+def marketDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Text('Market')],
                [sg.Button('< Prev'), sg.Button('Next >')]]
 
-    return sg.Window('Window 2', layout, finalize=True, size= (windowWidth,windowHeight))
+    return sg.Window('Window 2', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
