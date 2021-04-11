@@ -4,14 +4,14 @@ from screeninfo import get_monitors
 import auth
 import market
 import profile
+import utilities
 
 sg.theme('LightGrey3')
 
 windowWidth, windowHeight = None, None
 
-monitors = get_monitors()
-if(monitors):
-    monitor = monitors[0]
+if(not utilities.is_docker()):
+    monitor = get_monitors()[0]
     windowWidth , windowHeight = monitor.width, monitor.height
 else:
     windowWidth , windowHeight = 1920, 1080
