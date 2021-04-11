@@ -4,6 +4,10 @@ build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
+    - sudo apt-get install python
+    - pip install pipenv
+    - pipenv shell
+    - pipenv install
     - python src/main.py
 
 test-job1:
