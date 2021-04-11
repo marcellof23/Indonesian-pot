@@ -10,7 +10,7 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - pipenv install --ignore-pipfile
-    - python3 src/main.py
+    - pipenv run python3 src/main.py
 
 test-job1:
   stage: test
