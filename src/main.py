@@ -7,8 +7,14 @@ import profile
 
 sg.theme('LightGrey3')
 
-monitor = get_monitors()[0]
-windowWidth , windowHeight = monitor.width, monitor.height 
+windowWidth, windowHeight = None, None
+
+monitors = get_monitors()
+if(monitors):
+    monitor = monitors[0]
+    windowWidth , windowHeight = monitor.width, monitor.height
+else:
+    windowWidth , windowHeight = 1920, 1080
 
 loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(windowWidth, windowHeight), None, None, None
 
