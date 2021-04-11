@@ -5,32 +5,44 @@ import auth
 import market
 import profile
 
+sg.theme('LightGrey6')
+
 monitor = get_monitors()[0]
 windowWidth , windowHeight = monitor.width, monitor.height 
 
-loginScreen, marketScreen, profileScreen = auth.loginDisplay(), None, None
+loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(), None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
-    if window == loginScreen and event in (sg.WIN_CLOSED, 'Exit'):
+    if event == sg.WIN_CLOSED:
         break
 
     if window == loginScreen:
-        if event == 'Next >':
-            loginScreen.hide()
+        if event == 'Login':
+            loginScreen.close()
             marketScreen = market.marketDisplay()
-        loginScreen['-OUTPUT-'].update(values['-IN-'])
+        if event == 'Register':
+            loginScreen.close()
+            registerScreen = auth.registerDisplay()
+
+    if window == registerScreen:
+        if event == 'Next >':
+            registerScreen.close()
+            marketScreen = market.marketDisplay()
+        elif event == 'Login':
+            registerScreen.close()
+            loginScreen = auth.loginDisplay()
 
     if window == marketScreen:
         if event == 'Next >':
-            marketScreen.hide()
-            profileScreen = profile.profileDisplay()
-        elif event in (sg.WIN_CLOSED, '< Prev'):
             marketScreen.close()
-            loginScreen.un_hide()
+            profileScreen = profile.profileDisplay()
+        elif event == '< Prev':
+            marketScreen.close()
+            loginScreen = auth.loginDisplay()
 
     if window == profileScreen:
         profileScreen.close()
-        marketScreen.un_hide()
+        marketScreen = market.marketDisplay()
 
 window.close()

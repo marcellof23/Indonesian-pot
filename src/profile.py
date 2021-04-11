@@ -6,5 +6,5 @@ windowWidth , windowHeight = monitor.width, monitor.height
 
 def profileDisplay():
     layout = [[sg.Text('Profile')],
-               [sg.Button('< Prev'), sg.Button('Exit')]]
+               [sg.Button('Exit')]]
     return sg.Window('Profile', layout, finalize=True, size= (windowWidth,windowHeight))
