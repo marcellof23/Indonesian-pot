@@ -9,7 +9,8 @@ def loginDisplay(windowWidth : int, windowHeight : int):
               [sg.Input(k='PASSWORD', enable_events=True)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1), k='ERRORMSG')]]
-    window = sg.Window('Login', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
+    window = sg.Window('Login', layout, finalize=True, location=(-10, 0), resizable=True)
+    window.maximize()
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
     utilities.setPlaceholder(window["PASSWORD"], placeholderText="password")
     return window
@@ -24,7 +25,8 @@ def registerDisplay(windowWidth : int, windowHeight : int):
               [sg.Input(k='ADDRESS', enable_events=True)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1),  k='ERRORMSG')]]
-    window = sg.Window('Register', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
+    window = sg.Window('Register', layout, finalize=True, location=(-10, 0), resizable=True)
+    window.maximize()
     utilities.setPlaceholder(window["NAME"], placeholderText="your name")
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
     utilities.setPlaceholder(window["PASSWORD"], placeholderText="password")
