@@ -23,7 +23,7 @@ def registerAuthController(name: str,email: str, password: str, repeatedpassword
     if(sha256(password.encode()).hexdigest() == sha256(repeatedpassword.encode()).hexdigest()):
         user = users.find_one({"email": email})
         if(user):
-            return "EMAILREGISTERED"
+            return "EMAILALREADYREGISTERED"
         else:
             x = users.insert_one({"nama": name,"email": email, "password": password, "telp": phonenumber, "alamat": address})
             return x
