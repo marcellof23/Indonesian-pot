@@ -14,14 +14,16 @@ def loginDisplay(windowWidth : int, windowHeight : int):
 
 def registerDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Text('Register'), ],
+              [sg.Input(k='NAME', enable_events=True)],
               [sg.Input(k='EMAIL', enable_events=True)],
               [sg.Input(k='PASSWORD', enable_events=True)],
               [sg.Input(k='REPEATEDPASSWORD', enable_events=True)],
               [sg.Input(k='PHONE', enable_events=True)],
               [sg.Input(k='ADDRESS', enable_events=True)],
               [sg.Button('Register'), sg.Button('Login')],
-              [sg.Text(size=(20,1),  k='-OUTPUT-')]]
+              [sg.Text(size=(20,1),  k='ERRORMSG')]]
     window = sg.Window('Register', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
+    utilities.setPlaceholder(window["NAME"], placeholderText="your name")
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
     utilities.setPlaceholder(window["PASSWORD"], placeholderText="password")
     utilities.setPlaceholder(window["REPEATEDPASSWORD"], placeholderText="repeat password")

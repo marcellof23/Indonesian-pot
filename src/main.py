@@ -29,19 +29,33 @@ while True:
 
     if window == loginScreen:
         if event == 'Login':
+
             response = authController.loginAuthController(values['EMAIL'],values['PASSWORD'])
             if(response):
                 loginScreen.close()
                 marketScreen = market.marketDisplay(windowWidth, windowHeight)
             window['ERRORMSG'].update("Failed")
+            
         if event == 'Register':
             loginScreen.close()
             registerScreen = auth.registerDisplay(windowWidth, windowHeight)
 
     if window == registerScreen:
         if event == 'Register':
-            registerScreen.close()
-            marketScreen = market.marketDisplay(windowWidth, windowHeight)
+            validate = len(values['NAME'])>0 and len(values['EMAIL'])>0 and len(values['PASSWORD'])>0 and len(values['REPEATEDPASSWORD'])>0 and len(values['PHONE'])>0 and len(values['ADDRESS'])>0 and values['NAME']!="your name" and values['EMAIL']!="e-mail address" and values['PASSWORD']!="password" and values['REPEATEDPASSWORD']!="repeat password" and values['PHONE']!="phone number" and values['ADDRESS']!="address"
+            print(validate)
+            print("HAHAHA")
+            if(validate):
+                response = authController.registerAuthController(values['NAME'],values['EMAIL'],values['PASSWORD'],values['REPEATEDPASSWORD'],values['PHONE'],values['ADDRESS'])
+                if(response == "PASSNOTMATCH"):
+                    window['ERRORMSG'].update(response)
+                elif(response == "EMAILALREADYREGISTERED"):
+                    window['ERRORMSG'].update(response)
+                else:
+                    registerScreen.close()
+                    marketScreen = market.marketDisplay(windowWidth, windowHeight)
+            else:
+                window['ERRORMSG'].update("Fields must not be empty")
         elif event == 'Login':
             registerScreen.close()
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
