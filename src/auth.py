@@ -2,13 +2,13 @@ import style
 import PySimpleGUI as sg
 import utilities
 
-
+password = {''}
 
 def loginDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Image(key="-IMAGE-",size=(20,20))],
               [sg.Text('\nLogin\n',**style.title)],
-              [sg.Input(k='EMAIL', enable_events=True)],
-              [sg.Input(k='PASSWORD', enable_events=True)],
+              [sg.Text('Email\t :',**style.normal),sg.Input(k='EMAIL', enable_events=True)],
+              [sg.Text('Password\t :',**style.normal),sg.Input(k='PASSWORD', enable_events=True,password_char='*')],
               [sg.Text('',**style.title)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1), k='ERRORMSG')]]
@@ -22,12 +22,12 @@ def loginDisplay(windowWidth : int, windowHeight : int):
 def registerDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Image(key="-IMAGE-",size=(20,20))],
               [sg.Text('\nRegister\n',**style.title)],
-              [sg.Input(k='NAME', enable_events=True)],
-              [sg.Input(k='EMAIL', enable_events=True)],
-              [sg.Input(k='PASSWORD', enable_events=True)],
-              [sg.Input(k='REPEATEDPASSWORD', enable_events=True)],
-              [sg.Input(k='PHONE', enable_events=True)],
-              [sg.Input(k='ADDRESS', enable_events=True)],
+              [sg.Text('Name\t\t :',**style.normal),sg.Input(k='NAME', enable_events=True)],
+              [sg.Text('Email\t\t :',**style.normal),sg.Input(k='EMAIL', enable_events=True)],
+              [sg.Text('Password\t\t :',**style.normal),sg.Input(k='PASSWORD', enable_events=True,password_char='*')],
+              [sg.Text('Repeat Password\t :',**style.normal),sg.Input(k='REPEATEDPASSWORD', enable_events=True,password_char='*')],
+              [sg.Text('Phone\t\t :',**style.normal),sg.Input(k='PHONE', enable_events=True)],
+              [sg.Text('Address\t\t :',**style.normal),sg.Input(k='ADDRESS', enable_events=True)],
               [sg.Text('',**style.title)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1),  k='ERRORMSG')]]
