@@ -1,5 +1,7 @@
 import os, re
 import PySimpleGUI as sg
+from PIL import Image
+import io
 
 path = "/proc/self/cgroup"
 
@@ -51,3 +53,10 @@ def setPlaceholder(widget, placeholderText):
           return text if text != placeholderText else ""
       widget.Get = get_value
       return
+
+def insertImage(x,y,window):
+  image = Image.open(r"resource/Logo.png","r")
+  image.thumbnail((x, y))
+  bio = io.BytesIO()
+  image.save(bio, format="PNG")
+  window["-IMAGE-"].update(data=bio.getvalue())

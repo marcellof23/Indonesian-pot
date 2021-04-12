@@ -10,8 +10,12 @@ screeninfo = "*"
 pyinstaller = "*"
 pymongo = {extras = ["srv"], version = "*"}
 python-dotenv = "*"
+pillow = "*"
 
 [dev-packages]
+pytest = "*"
+pysimplegui = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"
