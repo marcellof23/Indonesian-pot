@@ -3,8 +3,6 @@ image: ubuntu:20.04
 before_script:
     - ls
     - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install -y x11-xserver-utils && apt-get install --yes python3.9 && apt install --yes python3-pip && apt-get install --yes python3-tk
-    - export MPLBACKEND='Agg'
-    - export DISPLAY=:0.0
     - pip3 install pipenv
 
 build-job:
@@ -12,7 +10,7 @@ build-job:
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - pipenv install --ignore-pipfile
-    - pipenv run python3 src/main.py
+    - pipenv run pyinstaller main.py
 
 test-job1:
   stage: test
