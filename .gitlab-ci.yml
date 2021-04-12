@@ -2,8 +2,8 @@ image: ubuntu:20.04
 
 before_script:
     - ls
-    - export DISPLAY=unix$DISPLAY
-    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install --yes python3.9 && apt install --yes python3-pip && apt-get install --yes python3-tk && 
+    - export DISPLAY=$DISPLAY
+    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install x11-xserver-utils && apt-get install --yes python3.9 && apt install --yes python3-pip && apt-get install --yes python3-tk && 
     - pip3 install pipenv
 
 build-job:
