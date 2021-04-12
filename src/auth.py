@@ -2,7 +2,6 @@ import style
 import PySimpleGUI as sg
 import utilities
 
-password = {''}
 
 def loginDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Image(key="-IMAGE-",size=(20,20))],
