@@ -6,16 +6,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
-print("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +"@cluster0.zaqu6.mongodb.net/pot?retryWrites=true&w=majority")
 client = pymongo.MongoClient("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +"@cluster0.zaqu6.mongodb.net/pot?retryWrites=true&w=majority")
 db = client.pot
 users = db.users
 
 def loginAuthController(email: str,password: str):
     email = email.lower()
-    print(email, password)
-    x = users.find_one({"email": email})
-    print(x)
+    x = users.find_one({"email": email,"password": sha256(password.encode()).hexdigest()})
     return x
 
 def registerAuthController(name: str,email: str, password: str, repeatedpassword: str, phonenumber: str, address: str):
@@ -25,10 +22,7 @@ def registerAuthController(name: str,email: str, password: str, repeatedpassword
         if(user):
             return "EMAILALREADYREGISTERED"
         else:
-            x = users.insert_one({"nama": name,"email": email, "password": password, "telp": phonenumber, "alamat": address})
+            x = users.insert_one({"nama": name,"email": email, "password": sha256(password.encode()).hexdigest(), "telp": phonenumber, "alamat": address})
             return x
     else:
         return "PASSNOTMATCH"
-
-password = "tampandanberani"
-print(sha256(password.encode()).hexdigest())

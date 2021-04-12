@@ -43,8 +43,6 @@ while True:
     if window == registerScreen:
         if event == 'Register':
             validate = len(values['NAME'])>0 and len(values['EMAIL'])>0 and len(values['PASSWORD'])>0 and len(values['REPEATEDPASSWORD'])>0 and len(values['PHONE'])>0 and len(values['ADDRESS'])>0 and values['NAME']!="your name" and values['EMAIL']!="e-mail address" and values['PASSWORD']!="password" and values['REPEATEDPASSWORD']!="repeat password" and values['PHONE']!="phone number" and values['ADDRESS']!="address"
-            print(validate)
-            print("HAHAHA")
             if(validate):
                 response = authController.registerAuthController(values['NAME'],values['EMAIL'],values['PASSWORD'],values['REPEATEDPASSWORD'],values['PHONE'],values['ADDRESS'])
                 if(response == "PASSNOTMATCH"):
