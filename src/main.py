@@ -36,12 +36,14 @@ while True:
                 values['EMAIL'], values['PASSWORD'])
             if(response):
                 loginScreen.close()
-                marketScreen = market.marketDisplay(windowWidth, windowHeight)
+                marketScreen = market.marketDisplay(
+                    windowWidth, windowHeight, [])
             window['ERRORMSG'].update("Failed")
 
         if event == 'Register':
             loginScreen.close()
-            registerScreen = auth.registerDisplay(windowWidth, windowHeight)
+            registerScreen = auth.registerDisplay(
+                windowWidth, windowHeight)
 
     if window == registerScreen:
         if event == 'Register':
@@ -69,17 +71,18 @@ while True:
             response = marketController.searchProductController(
                 values['QUERY'])
             if(response):
-                window['SEARCHRESULT'].update(response)
+                marketScreen.close()
+                marketScreen = market.marketDisplay(
+                    windowWidth, windowHeight, response)
             else:
                 window['ERRORMSG'].update("Produk tidak ditemukan!")
-                window['SEARCHRESULT'].update(response)
 
-        elif event == 'Next >':
-            marketScreen.close()
-            profileScreen = profile.profileDisplay(windowWidth, windowHeight)
-        elif event == '< Prev':
-            marketScreen.close()
-            loginScreen = auth.loginDisplay(windowWidth, windowHeight)
+        # elif event == 'Next >':
+        #     marketScreen.close()
+        #     profileScreen = profile.profileDisplay(windowWidth, windowHeight)
+        # elif event == '< Prev':
+        #     marketScreen.close()
+        #     loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == profileScreen:
         profileScreen.close()
