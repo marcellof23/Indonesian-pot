@@ -9,6 +9,7 @@ import utilities
 
 # Controller Functions
 import authController
+import marketController
 
 sg.theme('LightGrey3')
 
@@ -16,11 +17,12 @@ windowWidth, windowHeight = None, None
 
 if(not utilities.is_docker()):
     monitor = get_monitors()[0]
-    windowWidth , windowHeight = monitor.width, monitor.height
+    windowWidth, windowHeight = monitor.width, monitor.height
 else:
-    windowWidth , windowHeight = 1920, 1080
+    windowWidth, windowHeight = 1920, 1080
 
-loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(windowWidth, windowHeight), None, None, None
+loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -30,28 +32,32 @@ while True:
     if window == loginScreen:
         if event == 'Login':
 
-            response = authController.loginAuthController(values['EMAIL'],values['PASSWORD'])
+            response = authController.loginAuthController(
+                values['EMAIL'], values['PASSWORD'])
             if(response):
                 loginScreen.close()
                 marketScreen = market.marketDisplay(windowWidth, windowHeight)
             window['ERRORMSG'].update("Failed")
-            
+
         if event == 'Register':
             loginScreen.close()
             registerScreen = auth.registerDisplay(windowWidth, windowHeight)
 
     if window == registerScreen:
         if event == 'Register':
-            validate = len(values['NAME'])>0 and len(values['EMAIL'])>0 and len(values['PASSWORD'])>0 and len(values['REPEATEDPASSWORD'])>0 and len(values['PHONE'])>0 and len(values['ADDRESS'])>0 and values['NAME']!="your name" and values['EMAIL']!="e-mail address" and values['PASSWORD']!="password" and values['REPEATEDPASSWORD']!="repeat password" and values['PHONE']!="phone number" and values['ADDRESS']!="address"
+            validate = len(values['NAME']) > 0 and len(values['EMAIL']) > 0 and len(values['PASSWORD']) > 0 and len(values['REPEATEDPASSWORD']) > 0 and len(values['PHONE']) > 0 and len(
+                values['ADDRESS']) > 0 and values['NAME'] != "your name" and values['EMAIL'] != "e-mail address" and values['PASSWORD'] != "password" and values['REPEATEDPASSWORD'] != "repeat password" and values['PHONE'] != "phone number" and values['ADDRESS'] != "address"
             if(validate):
-                response = authController.registerAuthController(values['NAME'],values['EMAIL'],values['PASSWORD'],values['REPEATEDPASSWORD'],values['PHONE'],values['ADDRESS'])
+                response = authController.registerAuthController(
+                    values['NAME'], values['EMAIL'], values['PASSWORD'], values['REPEATEDPASSWORD'], values['PHONE'], values['ADDRESS'])
                 if(response == "PASSNOTMATCH"):
                     window['ERRORMSG'].update(response)
                 elif(response == "EMAILALREADYREGISTERED"):
                     window['ERRORMSG'].update(response)
                 else:
                     registerScreen.close()
-                    marketScreen = market.marketDisplay(windowWidth, windowHeight)
+                    marketScreen = market.marketDisplay(
+                        windowWidth, windowHeight)
             else:
                 window['ERRORMSG'].update("Fields must not be empty")
         elif event == 'Login':
@@ -59,7 +65,16 @@ while True:
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == marketScreen:
-        if event == 'Next >':
+        if event == 'Search':
+            response = marketController.searchProductController(
+                values['QUERY'])
+            if(response):
+                window['SEARCHRESULT'].update(response)
+            else:
+                window['ERRORMSG'].update("Produk tidak ditemukan!")
+                window['SEARCHRESULT'].update(response)
+
+        elif event == 'Next >':
             marketScreen.close()
             profileScreen = profile.profileDisplay(windowWidth, windowHeight)
         elif event == '< Prev':
