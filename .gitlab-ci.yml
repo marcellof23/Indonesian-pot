@@ -1,9 +1,14 @@
-image: alpine:latest
+image: ubuntu:20.04
 
 build-job:
   stage: build
   script:
     - echo "Hello, $GITLAB_USER_LOGIN!"
+    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install -y x11-xserver-utils && apt-get install --yes python3.8 && apt install --yes python3-pip && apt-get install --yes python3-tk
+    - apt-get install python3-dev
+    - pip3 install pipenv
+    - pipenv install --ignore-pipfile
+    - pipenv run pyinstaller src/main.py
 
 test-job1:
   stage: test
@@ -16,7 +21,7 @@ test-job2:
     - echo "This job tests something, but takes more time than test-job1."
     - echo "After the echo commands complete, it runs the sleep command for 20 seconds"
     - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 20
+    - sleep 5
 
 deploy-prod:
   stage: deploy
