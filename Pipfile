@@ -8,6 +8,8 @@ pysimplegui = "*"
 pylint = "*"
 screeninfo = "*"
 pyinstaller = "*"
+pymongo = {extras = ["srv"], version = "*"}
+python-dotenv = "*"
 
 [dev-packages]
 
