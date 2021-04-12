@@ -2,8 +2,9 @@ image: ubuntu:20.04
 
 before_script:
     - ls
-    - export DISPLAY=localhost:0.0
-    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install -y x11-xserver-utils && apt-get install --yes python3.9 && apt install --yes python3-pip && apt-get install --yes python3-tk && 
+    - apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends tzdata && apt-get install -y x11-xserver-utils && apt-get install --yes python3.9 && apt install --yes python3-pip && apt-get install --yes python3-tk
+    - export DISPLAY=$DISPLAY
+    - export MPLBACKEND='Agg'
     - pip3 install pipenv
 
 build-job:
