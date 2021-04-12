@@ -1,10 +1,14 @@
 import PySimpleGUI as sg
 from screeninfo import get_monitors
 
+# Boundary Functions
 import auth
 import market
 import profile
 import utilities
+
+# Controller Functions
+import authController
 
 sg.theme('LightGrey3')
 
@@ -26,6 +30,7 @@ while True:
     if window == loginScreen:
         if event == 'Login':
             loginScreen.close()
+            authController.loginAuthController(values['email'],values['password'])
             marketScreen = market.marketDisplay(windowWidth, windowHeight)
         if event == 'Register':
             loginScreen.close()
