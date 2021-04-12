@@ -14,7 +14,7 @@ products = db.products
 def searchProductController(query: str):
     query = query.lower()
     res = []
-    for product in products.find({"title": {"$regex": "\w*" + str(query) + "\w*"}}):
+    for product in products.find({"title": {"$regex": "\wz*" + str(query) + "\w*"}}, {"_id": 0, "userID": 0, "aktif": 0}):
         res.append(product)
     print(res)
     return res
