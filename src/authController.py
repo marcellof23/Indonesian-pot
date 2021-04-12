@@ -1,4 +1,5 @@
 import pymongo
+from hashlib import sha256
 import os
 from dotenv import load_dotenv
 
@@ -10,11 +11,15 @@ client = pymongo.MongoClient("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +
 db = client.pot
 users = db.users
 
-def loginAuthController(name: str,password: str):
-    print(name, password)
-    x = users.find_one({"nama": name})
+def loginAuthController(email: str,password: str):
+    print(email, password)
+    x = users.find_one({"email": email})
     print(x)
+    return x
 
 def registerAuthController(name: str):
     x = users.find_one({"nama": name})
     print(x)
+
+password = "Alexandria327"
+print(sha256(password.encode()).hexdigest())

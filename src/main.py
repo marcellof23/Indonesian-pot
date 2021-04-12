@@ -29,9 +29,11 @@ while True:
 
     if window == loginScreen:
         if event == 'Login':
-            loginScreen.close()
-            authController.loginAuthController(values['email'],values['password'])
-            marketScreen = market.marketDisplay(windowWidth, windowHeight)
+            response = authController.loginAuthController(values['EMAIL'],values['PASSWORD'])
+            if(response):
+                loginScreen.close()
+                marketScreen = market.marketDisplay(windowWidth, windowHeight)
+            window['ERRORMSG'].update("Failed")
         if event == 'Register':
             loginScreen.close()
             registerScreen = auth.registerDisplay(windowWidth, windowHeight)
