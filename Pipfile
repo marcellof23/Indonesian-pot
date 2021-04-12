@@ -12,6 +12,9 @@ pymongo = {extras = ["srv"], version = "*"}
 python-dotenv = "*"
 
 [dev-packages]
+pytest = "*"
+pysimplegui = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"

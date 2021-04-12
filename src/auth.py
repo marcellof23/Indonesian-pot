@@ -1,11 +1,13 @@
+import style
 import PySimpleGUI as sg
 import utilities
 
+
 def loginDisplay(windowWidth : int, windowHeight : int):
-    layout = [[sg.Text('Login'), ],
+    layout = [[sg.Text('Login',**style.title)],
               [sg.Input(k='EMAIL', enable_events=True)],
               [sg.Input(k='PASSWORD', enable_events=True)],
-              [sg.Button('Login'), sg.Button('Register')],
+              [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1), k='ERRORMSG')]]
     window = sg.Window('Login', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
@@ -13,14 +15,14 @@ def loginDisplay(windowWidth : int, windowHeight : int):
     return window
 
 def registerDisplay(windowWidth : int, windowHeight : int):
-    layout = [[sg.Text('Register'), ],
+    layout = [[sg.Text('Register',**style.title)],
               [sg.Input(k='NAME', enable_events=True)],
               [sg.Input(k='EMAIL', enable_events=True)],
               [sg.Input(k='PASSWORD', enable_events=True)],
               [sg.Input(k='REPEATEDPASSWORD', enable_events=True)],
               [sg.Input(k='PHONE', enable_events=True)],
               [sg.Input(k='ADDRESS', enable_events=True)],
-              [sg.Button('Register'), sg.Button('Login')],
+              [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1),  k='ERRORMSG')]]
     window = sg.Window('Register', layout, finalize=True, size= (windowWidth,windowHeight), location=(-10, 0))
     utilities.setPlaceholder(window["NAME"], placeholderText="your name")
