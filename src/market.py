@@ -1,31 +1,60 @@
 import PySimpleGUI as sg
+import utilities
 
 
-def makeTanamanLayout():
-    return [[sg.Button(button_text='Tes', s=(12, 7), button_color='#ffccff'), ], [sg.Text('tes2', background_color="#ccffff", size=(12, 7))]]
+def makeTanamanCard(data):
+    return [[sg.Button(button_text=data['title'], button_color="#ccffff")], [sg.Multiline(data['deskripsi'], background_color="#ccffff", size=(18, 6), no_scrollbar=True, pad=(25, 0))], [sg.Text(data['harga'], background_color="#ccffff")]]
 
 
-def marketDisplay(windowWidth: int, windowHeight: int):
-    layout1 = [[sg.Text('Indonesian - Pot', background_color="#ccffff"),
-                sg.Input(k='QUERY', enable_events=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Forum'), sg.Button('Tips & Tricks'), sg.Button('Cart'), sg.Button('< Prev'), sg.Button('Next >')]]
+def makeTanamanDetail(data):
+    return [[sg.Text(data['title'], background_color="#ccffff")],
+            [sg.Text(data['harga'], background_color="#ccffff")],
+            [sg.Text(data['deskripsi'], background_color="#ccffff"), ],
+            [sg.Text(text="Kategori : " + data['kategori'],
+                     background_color="#ccffff")],
+            [sg.Text(text="Stok : " + str(data['stok']),
+                     background_color="#ccffff")],
+            [sg.Text(text="Kuantitas : " + str(1), size=(20, 1),
+                     background_color="#ccffff", k="KUANTITAS")],
+            [sg.Button('Kurang'), sg.Button('Tambah')],
+            [sg.Button('Add to Cart')]]
 
-    layout2 = [
-        [sg.Text('List Tanaman', background_color='white', justification='center')]]
 
+def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailData):
+    layout1 = [[sg.Image(key="-IMAGE-", size=(20, 20)),
+                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Forum'), sg.Button('Tips & Tricks'), sg.Button('Cart'), sg.Button('Logout')]]
+
+    layout2 = [[sg.Text('List Tanaman', background_color='white')]]
     container_layout2 = [[]]
     list_layout2 = []
-    for i in range(5):
-        list_layout2 += sg.Column(makeTanamanLayout(), key=str(i),
-                                  background_color='#ffccff', pad=(125, 0)),
+    i = 1
+    itr = i
+    if(not(isDetail)):
+        for row in data:
+            if(itr % 3 == 0):
+                list_layout2 += sg.Column(makeTanamanCard(row), key=f'-COL{i}-',
+                                          background_color='#ffccff', size=(220, 200), pad=(180, 20), element_justification='c'),
+                container_layout2 += [list_layout2]
+                list_layout2 = []
+                itr = 0
+            else:
+                list_layout2 += sg.Column(makeTanamanCard(row), key=f'-COL{i}-',
+                                          background_color='#ffccff', size=(220, 200), pad=(180, 0), element_justification='c'),
+            itr += 1
+            i += 1
 
-    container_layout2 = [list_layout2]
+    else:
+        list_layout2 += sg.Column(makeTanamanDetail(detailData), key='-COL1-',
+                                  background_color='#ffccff'),
+
+    container_layout2 += [list_layout2]
     layout2 += container_layout2
-
-    layout = [[sg.Column(layout1, key='-COL1-', background_color='#ccffff',
-                         size=(windowWidth, 200))], [sg.Column(layout2, key='-COL2-', background_color='white', size=(windowWidth, windowHeight-300), justification='center')]]
-
-    return sg.Window('Market', layout, margins=(0, 0), finalize=True, size=(windowWidth, windowHeight), location=(-10, 0), element_justification='c', resizable=True)
-    # layout = [
-    #           [sg.Listbox(values=[], enable_events=True,
-    #                       size=(150, 20), k='SEARCHRESULT')],
-    #           [sg.Text(size=(20, 1), k='ERRORMSG')],
+    layout = [[sg.Column(layout1, key='HEADER', background_color='#ccffff',
+                         size=(windowWidth, 200), pad=(0, 0))],
+              [sg.Column(layout2, key='BODY', background_color='white',
+                         size=(windowWidth, windowHeight-200), pad=(0, 0))],
+              [sg.Text(size=(20, 1), k='ERRORMSG', pad=(0, 0))]]
+    window = sg.Window('Market', layout, margins=(0, 0), finalize=True, size=(
+        windowWidth, windowHeight), location=(-10, 0))
+    utilities.insertImage(500, 500, window)
+    return window

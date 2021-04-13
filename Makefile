@@ -1,4 +1,4 @@
 dev:
 	python src/main.py
-build:
-	pyinstaller src/main.py
+prod:
+	pyinstaller main.spec
