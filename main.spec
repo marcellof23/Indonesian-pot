@@ -3,7 +3,7 @@
 block_cipher = None
 
 
-a = Analysis(['src\\main.py'],
+a = Analysis(['src/main.py'],
              pathex=['C:\\Users\\user\\Documents\\if2250-2021-k02-04-indonesianpot'],
              binaries=[],
              datas=[("src/resource/Logo.png",".")],
