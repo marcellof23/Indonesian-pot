@@ -24,6 +24,11 @@ else:
 loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(
     windowWidth, windowHeight), None, None, None
 
+cardKey = []
+searchResult = []
+kuantitas = 1
+stok = 0
+
 while True:
     window, event, values = sg.read_all_windows()
     if event == sg.WIN_CLOSED:
@@ -36,12 +41,14 @@ while True:
                 values['EMAIL'], values['PASSWORD'])
             if(response):
                 loginScreen.close()
-                marketScreen = market.marketDisplay(windowWidth, windowHeight)
+                marketScreen = market.marketDisplay(
+                    windowWidth, windowHeight, [], False, {})
             window['ERRORMSG'].update("Failed")
 
         if event == 'Register':
             loginScreen.close()
-            registerScreen = auth.registerDisplay(windowWidth, windowHeight)
+            registerScreen = auth.registerDisplay(
+                windowWidth, windowHeight)
 
     if window == registerScreen:
         if event == 'Register':
@@ -57,7 +64,7 @@ while True:
                 else:
                     registerScreen.close()
                     marketScreen = market.marketDisplay(
-                        windowWidth, windowHeight)
+                        windowWidth, windowHeight, [], False, {})
             else:
                 window['ERRORMSG'].update("Fields must not be empty")
         elif event == 'Login':
@@ -65,21 +72,53 @@ while True:
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == marketScreen:
+
         if event == 'Search':
+            cardKey.clear()
+            searchResult.clear()
             response = marketController.searchProductController(
                 values['QUERY'])
             if(response):
-                window['SEARCHRESULT'].update(response)
+                for row in response:
+                    cardKey.append(row['title'])
+                    searchResult.append(row)
+                print(cardKey)
+                marketScreen.close()
+                marketScreen = market.marketDisplay(
+                    windowWidth, windowHeight, response, False, {})
             else:
                 window['ERRORMSG'].update("Produk tidak ditemukan!")
-                window['SEARCHRESULT'].update(response)
 
-        elif event == 'Next >':
+        elif event in cardKey:
+            kuantitas = 1
+            detail = {}
+            for row in searchResult:
+                if(row['title'] == event):
+                    detail = row
+                    stok = row['stok']
+
             marketScreen.close()
-            profileScreen = profile.profileDisplay(windowWidth, windowHeight)
-        elif event == '< Prev':
-            marketScreen.close()
-            loginScreen = auth.loginDisplay(windowWidth, windowHeight)
+            marketScreen = market.marketDisplay(
+                windowWidth, windowHeight, [], True, detail)
+
+        elif event == 'Kurang':
+            if(kuantitas > 0):
+                window['KUANTITAS'].update(
+                    "Kuantitas : " + str(kuantitas-1))
+                kuantitas -= 1
+
+        elif event == 'Tambah':
+            if(kuantitas < stok):
+                window['KUANTITAS'].update(
+                    "Kuantitas : " + str(kuantitas+1))
+                kuantitas += 1
+
+        # elif event == 'Next >':
+        #     marketScreen.close()
+        #     profileScreen = profile.profileDisplay(windowWidth, windowHeight)
+        # elif event == '< Prev':
+        #     marketScreen.close()
+        #     loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == profileScreen:
         profileScreen.close()
