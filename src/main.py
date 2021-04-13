@@ -118,9 +118,6 @@ while True:
         elif event == 'Profile':
             marketScreen.close()
             profileScreen = profile.profileDisplay(windowWidth, windowHeight,user)
-        # elif event == '< Prev':
-        #     marketScreen.close()
-        #     loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == profileScreen:
         if event == 'Logout':
