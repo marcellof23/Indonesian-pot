@@ -8,6 +8,7 @@ build-job:
     - apt-get install python3-dev
     - pip3 install pipenv
     - pipenv install --ignore-pipfile
+    - ls
     - pipenv run pyinstaller main.spec
 
 test-job1:
