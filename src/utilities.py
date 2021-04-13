@@ -55,12 +55,18 @@ def setPlaceholder(widget, placeholderText):
       return
 
 def resource_path(relative_path):
-    """ Get absolute path to resource, works for dev and for PyInstaller """
     base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
     return os.path.join(base_path, relative_path)
 
 def insertImage(x,y,window):
-  image = Image.open(resource_path("resource")+"/Logo.png","r")
+  image = None
+  try:
+      image = Image.open(r"Logo.png", "r")
+  except:
+      try:
+        image = Image.open(r"resource/Logo.png", "r")
+      except:
+        image = Image.open(r"src/resource/Logo.png", "r")
   image.thumbnail((x, y))
   bio = io.BytesIO()
   image.save(bio, format="PNG")
