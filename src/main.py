@@ -117,7 +117,8 @@ while True:
 
         elif event == 'Profile':
             marketScreen.close()
-            profileScreen = profile.profileDisplay(windowWidth, windowHeight,user)
+            profileScreen = profile.profileDisplay(
+                windowWidth, windowHeight, user)
 
     if window == profileScreen:
         if event == 'Logout':
@@ -126,6 +127,6 @@ while True:
         elif event == 'Store':
             profileScreen.close()
             marketScreen = market.marketDisplay(
-                windowWidth, windowHeight, [], False, {})            
+                windowWidth, windowHeight, [], False, {})
 
 window.close()
