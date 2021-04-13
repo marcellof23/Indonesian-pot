@@ -1,4 +1,4 @@
-import os, re
+import os, re, sys
 import PySimpleGUI as sg
 from PIL import Image
 import io
@@ -54,8 +54,13 @@ def setPlaceholder(widget, placeholderText):
       widget.Get = get_value
       return
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, relative_path)
+
 def insertImage(x,y,window):
-  image = Image.open(r"resource/Logo.png","r")
+  image = Image.open(resource_path("resource")+"/Logo.png","r")
   image.thumbnail((x, y))
   bio = io.BytesIO()
   image.save(bio, format="PNG")
