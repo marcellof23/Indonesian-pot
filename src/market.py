@@ -21,7 +21,7 @@ def makeTanamanDetail(data):
 
 def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailData):
     layout1 = [[sg.Text('Indonesian - Pot', background_color="#ccffff"),
-                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Forum'), sg.Button('Tips & Tricks'), sg.Button('Cart'), sg.Button('Logout')]]
+                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Forum'), sg.Button('Tips & Tricks'), sg.Button('Cart'), sg.Button('Profile')]]
 
     layout2 = [[sg.Text('List Tanaman', background_color='white')]]
 

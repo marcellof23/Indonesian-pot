@@ -28,6 +28,7 @@ cardKey = []
 searchResult = []
 kuantitas = 1
 stok = 0
+user = None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -40,6 +41,7 @@ while True:
             response = authController.loginAuthController(
                 values['EMAIL'], values['PASSWORD'])
             if(response):
+                user = response
                 loginScreen.close()
                 marketScreen = market.marketDisplay(
                     windowWidth, windowHeight, [], False, {})
@@ -113,15 +115,20 @@ while True:
                     "Kuantitas : " + str(kuantitas+1))
                 kuantitas += 1
 
-        # elif event == 'Next >':
-        #     marketScreen.close()
-        #     profileScreen = profile.profileDisplay(windowWidth, windowHeight)
+        elif event == 'Profile':
+            marketScreen.close()
+            profileScreen = profile.profileDisplay(windowWidth, windowHeight,user)
         # elif event == '< Prev':
         #     marketScreen.close()
         #     loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == profileScreen:
-        profileScreen.close()
-        marketScreen = market.marketDisplay(windowWidth, windowHeight)
+        if event == 'Logout':
+            profileScreen.close()
+            loginScreen = auth.loginDisplay(windowWidth, windowHeight)
+        elif event == 'Store':
+            profileScreen.close()
+            marketScreen = market.marketDisplay(
+                windowWidth, windowHeight, [], False, {})            
 
 window.close()
