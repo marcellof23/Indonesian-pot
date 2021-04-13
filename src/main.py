@@ -6,6 +6,7 @@ import auth
 import market
 import profile
 import utilities
+import cart
 
 # Controller Functions
 import authController
@@ -21,8 +22,10 @@ if(not utilities.is_docker()):
 else:
     windowWidth, windowHeight = 1920, 1080
 
-loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(
-    windowWidth, windowHeight), None, None, None
+loginScreen, registerScreen, marketScreen, profileScreen,cartScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None, None
+
+user = None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -35,6 +38,7 @@ while True:
             response = authController.loginAuthController(
                 values['EMAIL'], values['PASSWORD'])
             if(response):
+                user = response
                 loginScreen.close()
                 marketScreen = market.marketDisplay(windowWidth, windowHeight)
             window['ERRORMSG'].update("Failed")
@@ -76,7 +80,7 @@ while True:
 
         elif event == 'Next >':
             marketScreen.close()
-            profileScreen = profile.profileDisplay(windowWidth, windowHeight)
+            cartScreen = cart.cartDisplay(windowWidth, windowHeight,user)
         elif event == '< Prev':
             marketScreen.close()
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
