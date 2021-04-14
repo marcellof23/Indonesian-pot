@@ -12,14 +12,15 @@ db = client.pot
 cart = db.cart
 product = db.products
 
-def showCartProduct(user : dict):
+def getCartProduct(user : dict):
     z=[]
     print(user)
     x = cart.find_one({"userId":user["_id"]})
-    a = x['item']
-    for i in a:
-        y = (product.find_one({"_id": i["itemid"]}))
-        y['value'] = i["value"]
-        z.append(y)
+    if(x):
+        a = x['item']
+        for i in a:
+            y = (product.find_one({"_id": i["itemid"]}))
+            y['value'] = i["value"]
+            z.append(y)
     return(z)
 

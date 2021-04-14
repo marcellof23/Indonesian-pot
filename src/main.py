@@ -124,8 +124,8 @@ while True:
                 windowWidth, windowHeight, user)
         
         elif event == 'Cart':
-            marketScreen.close()
             cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+            marketScreen.close()
 
     if window == profileScreen:
         if event == 'Logout':
