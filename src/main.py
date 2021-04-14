@@ -76,15 +76,18 @@ while True:
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == marketScreen:
+        event = event.split(",")
+        if(len(event)==1):
+            event.append(None)
 
-        if event == 'Search':
+        if event[0] == 'Search':
             cardKey.clear()
             searchResult.clear()
             response = marketController.searchProductController(
                 values['QUERY'])
             if(response):
                 for row in response:
-                    cardKey.append(row['title'])
+                    cardKey.append(str(row['_id']))
                     searchResult.append(row)
                 print(cardKey)
                 marketScreen.close()
@@ -93,41 +96,40 @@ while True:
             else:
                 window['ERRORMSG'].update("Produk tidak ditemukan!")
 
-        elif event in cardKey:
-            kuantitas = 1
-            detail = {}
-            for row in searchResult:
-                if(row['title'] == event):
-                    detail = row
-                    stok = row['stok']
-
-            marketScreen.close()
-            print("Detail: ")
-            print(detail)
-            marketScreen = market.marketDisplay(
-                windowWidth, windowHeight, [], True, detail)
-
-        elif event == 'Kurang':
+        elif event[0] == 'ADD':
             if(kuantitas > 0):
                 window['KUANTITAS'].update(
                     "Kuantitas : " + str(kuantitas-1))
                 kuantitas -= 1
 
-        elif event == 'Tambah':
+        elif event[0] == 'REDUCE':
             if(kuantitas < stok):
                 window['KUANTITAS'].update(
                     "Kuantitas : " + str(kuantitas+1))
                 kuantitas += 1
 
-        elif event == 'Add to Cart':
+        elif event[0] == 'ADDTOCART':
+            print(event[1])
             print(kuantitas)
 
-        elif event == 'Profile':
+        elif event[1] in cardKey:
+            kuantitas = 1
+            detail = {}
+            for row in searchResult:
+                if(row['title'] == event[0]):
+                    detail = row
+                    stok = row['stok']
+
+            marketScreen.close()
+            marketScreen = market.marketDisplay(
+                windowWidth, windowHeight, [], True, detail)
+
+        elif event[0] == 'Profile':
             marketScreen.close()
             profileScreen = profile.profileDisplay(
                 windowWidth, windowHeight, user)
         
-        elif event == 'Cart':
+        elif event[0] == 'Cart':
             cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
             marketScreen.close()
 

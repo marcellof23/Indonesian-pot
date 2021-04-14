@@ -14,7 +14,6 @@ product = db.products
 
 def getCartProduct(user : dict):
     z=[]
-    print(user)
     x = carts.find_one({"userId":user["_id"]})
     if(x):
         a = x['item']
@@ -27,19 +26,15 @@ def getCartProduct(user : dict):
 def reduceCartProduct(userId, productId):
     status = "FAILED"
     cart = carts.find_one({"userId" : userId})
-    print("Product Id: " + productId)
-    print(cart)
     items = cart["item"]
     for item in items:
         if(str(item["itemid"])==str(productId)):
-            print("AAAAAAAAAAAAAAAA")
             if(item['value']>1):
                 item['value'] -= 1
                 status = "UPDATE"
             else:
                 items.remove(item)
                 status = "REFRESH"
-    print(cart)
     carts.find_one_and_update({"userId":userId}, {'$set': {'item' : items}})
     return status
 
