@@ -2,7 +2,6 @@ import style
 import PySimpleGUI as sg
 import utilities
 
-
 def loginDisplay(windowWidth : int, windowHeight : int):
     layout = [[sg.Image(key="-IMAGE-",size=(20,20))],
               [sg.Text('\nLogin\n',**style.title)],
@@ -11,7 +10,8 @@ def loginDisplay(windowWidth : int, windowHeight : int):
               [sg.Text('',**style.title)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1), k='ERRORMSG')]]
-    window = sg.Window('Login', layout, finalize=True, location=(-10, 0), resizable=True, element_justification='c',margins=(0,250))
+    bottomMargin = 250/1920 * windowHeight
+    window = sg.Window('Login', layout, finalize=True, location=(-10, 0), size=(windowWidth,windowHeight),resizable=True, element_justification='c',margins=(0,int(bottomMargin)))
     window.maximize()
     utilities.insertImage(500,500,window)
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
@@ -30,7 +30,8 @@ def registerDisplay(windowWidth : int, windowHeight : int):
               [sg.Text('',**style.title)],
               [sg.Button('Login',**style.bl), sg.Button('Register',**style.br)],
               [sg.Text(size=(20,1),  k='ERRORMSG')]]
-    window = sg.Window('Register', layout, finalize=True, location=(-10, 0), resizable=True, element_justification='c',margins=(0,250))
+    bottomMargin = 250/1920 * windowHeight
+    window = sg.Window('Register', layout, finalize=True, location=(-10, 0), resizable=True, size=(windowWidth,windowHeight),element_justification='c',margins=(0,int(bottomMargin)))
     window.maximize()
     utilities.insertImage(500,500,window)
     utilities.setPlaceholder(window["NAME"], placeholderText="your name")

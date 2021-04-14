@@ -21,7 +21,7 @@ if(not utilities.is_docker()):
     monitor = get_monitors()[0]
     windowWidth, windowHeight = monitor.width, monitor.height
 else:
-    windowWidth, windowHeight = 1920, 1080
+    windowWidth, windowHeight = 1366, 768
 
 loginScreen, registerScreen, marketScreen, profileScreen,cartScreen = auth.loginDisplay(
     windowWidth, windowHeight), None, None, None, None
