@@ -11,6 +11,7 @@ import cart
 # Controller Functions
 import authController
 import marketController
+import cartController
 
 sg.theme('LightGrey3')
 
@@ -25,14 +26,11 @@ else:
 loginScreen, registerScreen, marketScreen, profileScreen,cartScreen = auth.loginDisplay(
     windowWidth, windowHeight), None, None, None, None
 
-user = None
-
 cardKey = []
 searchResult = []
 kuantitas = 1
 stok = 0
 user = None
-activeProductId = None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -155,12 +153,15 @@ while True:
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], False, {})
         elif event[0] == 'REDUCE' :
+            status = cartController.reduceCartProduct(user["_id"], event[1])
             if(int(window[f'COUNT {event[1]}'].DisplayText)>1):
                 window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) - 1))
                 window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
             else:
-                print("ABIS GAN")
+                cartScreen.close()
+                cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
         elif event[0] == 'ADD' :
+            status = cartController.addCartProduct(user["_id"], event[1])
             window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
             window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
 window.close()
