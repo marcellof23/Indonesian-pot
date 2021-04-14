@@ -11,9 +11,16 @@ db = client.pot
 products = db.products
 
 
-def searchProductController(query: str):
+def searchProductByTitleController(query: str):
     query = query.lower()
     res = []
-    for product in products.find({"title": {"$regex": "\w*" + str(query) + "\w*"},"aktif":True}, {"userID": 0}):
+    for product in products.find({"title": {"$regex": "\w*" + str(query) + "\w*"}, "aktif": True}, {"userID": 0}):
+        res.append(product)
+    return res
+
+
+def searchProductByCategoryController(query: str):
+    res = []
+    for product in products.find({"kategori": {"$regex": "\w*" + str(query) + "\w*"}, "aktif": True}, {"userID": 0}):
         res.append(product)
     return res
