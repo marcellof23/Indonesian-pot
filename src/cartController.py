@@ -9,13 +9,13 @@ DATABASE_PASSWORD = os.getenv('DATABASE_PASSWORD')
 client = pymongo.MongoClient("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +"@cluster0.zaqu6.mongodb.net/pot?retryWrites=true&w=majority")
 
 db = client.pot
-cart = db.cart
+carts = db.cart
 product = db.products
 
 def getCartProduct(user : dict):
     z=[]
     print(user)
-    x = cart.find_one({"userId":user["_id"]})
+    x = carts.find_one({"userId":user["_id"]})
     if(x):
         a = x['item']
         for i in a:
@@ -24,3 +24,6 @@ def getCartProduct(user : dict):
             z.append(y)
     return(z)
 
+def reduceCartProduct(userId, productId):
+    cart = carts.find_one({"userId" : userId})
+    print(cart)
