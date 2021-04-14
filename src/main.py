@@ -6,10 +6,12 @@ import auth
 import market
 import profile
 import utilities
+import cart
 
 # Controller Functions
 import authController
 import marketController
+import cartController
 
 sg.theme('LightGrey3')
 
@@ -21,8 +23,8 @@ if(not utilities.is_docker()):
 else:
     windowWidth, windowHeight = 1920, 1080
 
-loginScreen, registerScreen, marketScreen, profileScreen = auth.loginDisplay(
-    windowWidth, windowHeight), None, None, None
+loginScreen, registerScreen, marketScreen, profileScreen,cartScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None, None
 
 cardKey = []
 searchResult = []
@@ -74,28 +76,47 @@ while True:
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
 
     if window == marketScreen:
+        event = event.split(",")
+        if(len(event)==1):
+            event.append(None)
 
-        if event == 'Search':
+        if event[0] == 'Search':
             cardKey.clear()
             searchResult.clear()
             response = marketController.searchProductController(
                 values['QUERY'])
             if(response):
                 for row in response:
-                    cardKey.append(row['title'])
+                    cardKey.append(str(row['_id']))
                     searchResult.append(row)
-                print(cardKey)
-                marketScreen.close()
                 marketScreen = market.marketDisplay(
                     windowWidth, windowHeight, response, False, {})
+                window.close()
             else:
                 window['ERRORMSG'].update("Produk tidak ditemukan!")
 
-        elif event in cardKey:
+        elif event[0] == 'ADD':
+            if(kuantitas > 0):
+                window['KUANTITAS'].update(
+                    "Kuantitas : " + str(kuantitas-1))
+                kuantitas -= 1
+
+        elif event[0] == 'REDUCE':
+            if(kuantitas < stok):
+                window['KUANTITAS'].update(
+                    "Kuantitas : " + str(kuantitas+1))
+                kuantitas += 1
+
+        elif event[0] == 'ADDTOCART':
+            print(event[1])
+            print(kuantitas)
+            cartController.addProductToCart(user["_id"],event[1],kuantitas)
+
+        elif event[1] in cardKey:
             kuantitas = 1
             detail = {}
             for row in searchResult:
-                if(row['title'] == event):
+                if(row['title'] == event[0]):
                     detail = row
                     stok = row['stok']
 
@@ -103,22 +124,14 @@ while True:
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], True, detail)
 
-        elif event == 'Kurang':
-            if(kuantitas > 0):
-                window['KUANTITAS'].update(
-                    "Kuantitas : " + str(kuantitas-1))
-                kuantitas -= 1
-
-        elif event == 'Tambah':
-            if(kuantitas < stok):
-                window['KUANTITAS'].update(
-                    "Kuantitas : " + str(kuantitas+1))
-                kuantitas += 1
-
-        elif event == 'Profile':
+        elif event[0] == 'Profile':
             marketScreen.close()
             profileScreen = profile.profileDisplay(
                 windowWidth, windowHeight, user)
+        
+        elif event[0] == 'Cart':
+            cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+            marketScreen.close()
 
     if window == profileScreen:
         if event == 'Logout':
@@ -128,5 +141,29 @@ while True:
             profileScreen.close()
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], False, {})
-
+        elif event == 'Cart':
+            profileScreen.close()
+            cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+    if window == cartScreen:
+        event = event.split()
+        if event[0] == 'Profile':
+            cartScreen.close()
+            profileScreen = profile.profileDisplay(
+                windowWidth, windowHeight, user)
+        elif event[0] == 'Store':
+            cartScreen.close()
+            marketScreen = market.marketDisplay(
+                windowWidth, windowHeight, [], False, {})
+        elif event[0] == 'REDUCE' :
+            status = cartController.reduceCartProduct(user["_id"], event[1])
+            if(int(window[f'COUNT {event[1]}'].DisplayText)>1):
+                window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) - 1))
+                window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+            else:
+                cartScreen.close()
+                cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+        elif event[0] == 'ADD' :
+            status = cartController.addCartProduct(user["_id"], event[1])
+            window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
+            window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
 window.close()

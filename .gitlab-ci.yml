@@ -9,7 +9,7 @@ build-job:
     - pip3 install pipenv
     - pipenv install --ignore-pipfile
     - ls
-    - pipenv run pyinstaller main.spec
+    - pipenv run pyinstaller -y main.spec
 
 test-job1:
   stage: test
