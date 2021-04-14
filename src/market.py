@@ -5,10 +5,11 @@ from authController import db
 
 def makeTanamanCard(data, i):
     imgData = bytes(data["imageData"], 'utf-8')
-    return [[sg.Button(button_text=data['title'], image_data=imgData, key=f'-LOGOS{i}-', image_subsample=8)], [sg.Multiline(data['deskripsi'], background_color="#ccffff", size=(18, 6), no_scrollbar=True, pad=(25, 0))], [sg.Text(data['harga'], background_color="#ccffff")]]
+    return [[sg.Button(button_text=data['title'], image_data=imgData, key=f"{data['title']},{data['_id']}", image_subsample=8)], [sg.Multiline(data['deskripsi'], background_color="#ccffff", size=(18, 6), no_scrollbar=True, pad=(25, 0))], [sg.Text(data['harga'], background_color="#ccffff")]]
 
 
 def makeTanamanDetail(data):
+    key = data["_id"]
     return [[sg.Text(data['title'], background_color="#ccffff")],
             [sg.Text(data['harga'], background_color="#ccffff")],
             [sg.Text(data['deskripsi'], background_color="#ccffff"), ],
@@ -18,13 +19,14 @@ def makeTanamanDetail(data):
                      background_color="#ccffff")],
             [sg.Text(text="Kuantitas : " + str(1), size=(20, 1),
                      background_color="#ccffff", k="KUANTITAS")],
-            [sg.Button('Kurang'), sg.Button('Tambah')],
-            [sg.Button('Add to Cart')]]
+            [sg.Button(button_text='Kurang', key="ADD"),
+             sg.Button(button_text='Tambah', key="REDUCE")],
+            [sg.Button(button_text='Add to Cart', key=f"ADDTOCART,{key}")]]
 
 
 def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailData):
     layout1 = [[sg.Image(key="-IMAGE-", size=(20, 20)),
-                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Cart'), sg.Button('Logout')]]
+                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.Button('Store'), sg.Button('Cart'), sg.Button('Profile')]]
 
     layout2 = [[sg.Text('List Tanaman', background_color='white')]]
     container_layout2 = [[]]
