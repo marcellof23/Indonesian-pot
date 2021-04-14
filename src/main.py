@@ -89,10 +89,9 @@ while True:
                 for row in response:
                     cardKey.append(str(row['_id']))
                     searchResult.append(row)
-                print(cardKey)
-                marketScreen.close()
                 marketScreen = market.marketDisplay(
                     windowWidth, windowHeight, response, False, {})
+                window.close()
             else:
                 window['ERRORMSG'].update("Produk tidak ditemukan!")
 
@@ -111,6 +110,7 @@ while True:
         elif event[0] == 'ADDTOCART':
             print(event[1])
             print(kuantitas)
+            cartController.addProductToCart(user["_id"],event[1],kuantitas)
 
         elif event[1] in cardKey:
             kuantitas = 1

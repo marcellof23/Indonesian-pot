@@ -7,7 +7,6 @@ def makeTanamanCard(data):
 
 
 def makeTanamanDetail(data):
-    print("AAAAAAAAA")
     key = data["_id"]
     return [[sg.Text(data['title'], background_color="#ccffff")],
             [sg.Text(data['harga'], background_color="#ccffff")],
