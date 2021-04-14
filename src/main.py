@@ -7,6 +7,7 @@ import market
 import profile
 import utilities
 import cart
+import payment
 
 # Controller Functions
 import authController
@@ -23,8 +24,8 @@ if(not utilities.is_docker()):
 else:
     windowWidth, windowHeight = 1920, 1080
 
-loginScreen, registerScreen, marketScreen, profileScreen,cartScreen = auth.loginDisplay(
-    windowWidth, windowHeight), None, None, None, None
+loginScreen, registerScreen, marketScreen, profileScreen, cartScreen, paymentScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None, None, None
 
 cardKey = []
 searchResult = []
@@ -166,4 +167,14 @@ while True:
             status = cartController.addCartProduct(user["_id"], event[1])
             window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
             window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+        elif event[0] == 'CHECKOUT':
+            cartScreen.close()
+            paymentScreen = payment.paymentDisplay(windowWidth,windowHeight,user)
+
+    if window == paymentScreen:
+        print(event)
+        if event == 'Pay':
+            paymentScreen.close()
+            marketScreen = market.marketDisplay(
+            windowWidth, windowHeight, [], False, {})
 window.close()
