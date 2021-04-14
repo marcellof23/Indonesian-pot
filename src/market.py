@@ -1,9 +1,11 @@
 import PySimpleGUI as sg
 import utilities
+from authController import db
 
 
-def makeTanamanCard(data):
-    return [[sg.Button(button_text=data['title'], button_color="#ccffff")], [sg.Multiline(data['deskripsi'], background_color="#ccffff", size=(18, 6), no_scrollbar=True, pad=(25, 0))], [sg.Text(data['harga'], background_color="#ccffff")]]
+def makeTanamanCard(data, i):
+    imgData = bytes(data["imageData"], 'utf-8')
+    return [[sg.Button(button_text=data['title'], image_data=imgData, key=f'-LOGOS{i}-', image_subsample=8)], [sg.Multiline(data['deskripsi'], background_color="#ccffff", size=(18, 6), no_scrollbar=True, pad=(25, 0))], [sg.Text(data['harga'], background_color="#ccffff")]]
 
 
 def makeTanamanDetail(data):
@@ -32,14 +34,14 @@ def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailDat
     if(not(isDetail)):
         for row in data:
             if(itr % 3 == 0):
-                list_layout2 += sg.Column(makeTanamanCard(row), key=f'-COL{i}-',
-                                          background_color='#ffccff', size=(220, 200), pad=(180, 20), element_justification='c'),
+                list_layout2 += sg.Column(makeTanamanCard(row, i), key=f'-COL{i}-',
+                                          background_color='#ffccff', size=(220, 300), pad=(180, 50), element_justification='c'),
                 container_layout2 += [list_layout2]
                 list_layout2 = []
                 itr = 0
             else:
-                list_layout2 += sg.Column(makeTanamanCard(row), key=f'-COL{i}-',
-                                          background_color='#ffccff', size=(220, 200), pad=(180, 0), element_justification='c'),
+                list_layout2 += sg.Column(makeTanamanCard(row, i), key=f'-COL{i}-',
+                                          background_color='#ffccff', size=(220, 300), pad=(180, 50), element_justification='c'),
             itr += 1
             i += 1
 
