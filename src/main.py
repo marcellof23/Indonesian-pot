@@ -32,6 +32,7 @@ searchResult = []
 kuantitas = 1
 stok = 0
 user = None
+activeProductId = None
 
 while True:
     window, event, values = sg.read_all_windows()
@@ -103,6 +104,8 @@ while True:
                     stok = row['stok']
 
             marketScreen.close()
+            print("Detail: ")
+            print(detail)
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], True, detail)
 
@@ -117,6 +120,9 @@ while True:
                 window['KUANTITAS'].update(
                     "Kuantitas : " + str(kuantitas+1))
                 kuantitas += 1
+
+        elif event == 'Add to Cart':
+            print(kuantitas)
 
         elif event == 'Profile':
             marketScreen.close()
@@ -139,12 +145,22 @@ while True:
             profileScreen.close()
             cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
     if window == cartScreen:
-        if event == 'Profile':
+        event = event.split()
+        if event[0] == 'Profile':
             cartScreen.close()
             profileScreen = profile.profileDisplay(
                 windowWidth, windowHeight, user)
-        elif event == 'Store':
+        elif event[0] == 'Store':
             cartScreen.close()
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], False, {})
+        elif event[0] == 'REDUCE' :
+            if(int(window[f'COUNT {event[1]}'].DisplayText)>1):
+                window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) - 1))
+                window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+            else:
+                print("ABIS GAN")
+        elif event[0] == 'ADD' :
+            window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
+            window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
 window.close()

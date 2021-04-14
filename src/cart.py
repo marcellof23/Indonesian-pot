@@ -9,10 +9,11 @@ def cartDisplay(windowWidth : int,windowHeight : int,user:dict):
                 sg.Button('Store'), sg.Button('Profile')]]
     cartData = cartController.getCartProduct(user)
     if(len(cartData)>0):
-        for i in cartData:
-            print(i)
+        for data in cartData:
+            key = data["_id"]
+            price = str(data['value']*data['harga'])
             layout1 += [
-                [sg.Text('Profile\t\t',**style.normal),sg.Column([[sg.Text(i['title'],**style.normal)],[sg.Text(i['harga'],**style.normal)]]),sg.Text('\t' +str(i['value'])+'\t',**style.normal),sg.Text(str(i['value']*i['harga']) + '\t',**style.normal),sg.Button('Hapus',**style.bd)],
+                [sg.Text('Profile\t\t',**style.normal),sg.Column([[sg.Text(text=data['title'],key=data['title'],size=(20,1),**style.normal)],[sg.Text(text=data['harga'],key=f"HARGA {key}",size=(20,1),**style.normal)]]),sg.Text(text='\t' +str(data['value']) + '\t',key=f'COUNT {key}',size=(10,1),**style.normal),sg.Text(text=price + '\t', key=f'HARGATOTAL {key}',size=(20,1),**style.normal),sg.Button(button_text='-',key=f"REDUCE {key}",**style.bd),sg.Button(button_text='+',key=f"ADD {key}",**style.bd)],
                 [sg.Text('\n\n')]
                 ]
             # layout1 += [
