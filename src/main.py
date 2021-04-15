@@ -23,10 +23,15 @@ if(not utilities.is_docker()):
     monitor = get_monitors()[0]
     windowWidth, windowHeight = monitor.width, monitor.height
 else:
-    windowWidth, windowHeight = 1920, 1080
+    windowWidth, windowHeight = 1366, 768
 
+<<<<<<< HEAD
 loginScreen, registerScreen, marketScreen, profileScreen, cartScreen, paymentScreen = auth.loginDisplay(
     windowWidth, windowHeight), None, None, None, None, None
+=======
+loginScreen, registerScreen, marketScreen, profileScreen, cartScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None, None
+>>>>>>> 3b16e0f903fa6933cefaba3b454ca72741bb4c1d
 
 cardKey = []
 searchResult = []
@@ -79,13 +84,13 @@ while True:
 
     if window == marketScreen:
         event = event.split(",")
-        if(len(event)==1):
+        if(len(event) == 1):
             event.append(None)
 
         if event[0] == 'Search':
             cardKey.clear()
             searchResult.clear()
-            response = marketController.searchProductController(
+            response = marketController.searchProductByTitleController(
                 values['QUERY'])
             if(response):
                 for row in response:
@@ -112,7 +117,22 @@ while True:
         elif event[0] == 'ADDTOCART':
             print(event[1])
             print(kuantitas)
-            cartController.addProductToCart(user["_id"],event[1],kuantitas)
+            cartController.addProductToCart(user["_id"], event[1], kuantitas)
+
+        elif event[0] == 'KATEGORI':
+            cardKey.clear()
+            searchResult.clear()
+            response = marketController.searchProductByCategoryController(
+                values['KATEGORI'])
+            if(response):
+                for row in response:
+                    cardKey.append(str(row['_id']))
+                    searchResult.append(row)
+                marketScreen = market.marketDisplay(
+                    windowWidth, windowHeight, response, False, {})
+                window.close()
+            else:
+                window['ERRORMSG'].update("Produk tidak ditemukan!")
 
         elif event[1] in cardKey:
             kuantitas = 1
@@ -130,9 +150,9 @@ while True:
             marketScreen.close()
             profileScreen = profile.profileDisplay(
                 windowWidth, windowHeight, user)
-        
+
         elif event[0] == 'Cart':
-            cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+            cartScreen = cart.cartDisplay(windowWidth, windowHeight, user)
             marketScreen.close()
 
     if window == profileScreen:
@@ -145,7 +165,7 @@ while True:
                 windowWidth, windowHeight, [], False, {})
         elif event == 'Cart':
             profileScreen.close()
-            cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
+            cartScreen = cart.cartDisplay(windowWidth, windowHeight, user)
     if window == cartScreen:
         event = event.split()
         if event[0] == 'Profile':
@@ -156,18 +176,22 @@ while True:
             cartScreen.close()
             marketScreen = market.marketDisplay(
                 windowWidth, windowHeight, [], False, {})
-        elif event[0] == 'REDUCE' :
+        elif event[0] == 'REDUCE':
             status = cartController.reduceCartProduct(user["_id"], event[1])
-            if(int(window[f'COUNT {event[1]}'].DisplayText)>1):
-                window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) - 1))
-                window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+            if(int(window[f'COUNT {event[1]}'].DisplayText) > 1):
+                window[f'COUNT {event[1]}'].update(
+                    str(int(window[f'COUNT {event[1]}'].DisplayText) - 1))
+                window[f'HARGATOTAL {event[1]}'].update(str(int(
+                    window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
             else:
                 cartScreen.close()
-                cartScreen = cart.cartDisplay(windowWidth,windowHeight,user)
-        elif event[0] == 'ADD' :
+                cartScreen = cart.cartDisplay(windowWidth, windowHeight, user)
+        elif event[0] == 'ADD':
             status = cartController.addCartProduct(user["_id"], event[1])
-            window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
-            window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+            window[f'COUNT {event[1]}'].update(
+                str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
+            window[f'HARGATOTAL {event[1]}'].update(str(int(
+                window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
         elif event[0] == 'Checkout':
             if (not cartController.checkIsCartEmpty(cartController.getCartProduct(user))):
                 canCheckout = cartController.addOrderFromCart(user)
