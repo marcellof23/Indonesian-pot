@@ -13,6 +13,7 @@ client = pymongo.MongoClient("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +
 db = client.pot
 carts = db.cart
 product = db.products
+order = db.orders
 
 def getCartProduct(user : dict):
     z=[]
@@ -67,3 +68,42 @@ def addProductToCart(userId, productId, amount : int):
             items.append(copy.deepcopy(newItem))
         carts.find_one_and_update({"userId":userId}, {"$set": {'item': items}})
     return status
+
+def addOrderFromCart(user : dict):
+    z=[]
+    orderCanBeMake = False
+    x = carts.find_one({"userId":user["_id"]})
+    if(x):
+        a = x['item']
+        for i in a:
+            y = (product.find_one({"_id": i["itemId"]}))
+            y['count'] = i["count"]
+            z.append(y)
+    if (checkIsStockEnough(z)):
+        for j in z:
+            if (not order.find_one({"idPenjual":j["userID"], "status" : "belum dibayar"})):
+                order.insert_one({"idPembeli":user["_id"], "idPenjual":j["userID"], "alamat":user['alamat'], "status":"belum dibayar", "metode":"online"})
+        
+    return checkIsStockEnough(z)
+
+def checkIsStockEnough(product : list):
+    stockEnough = False
+    for j in product:
+        if (j['count'] <= j['stok']):
+            stockEnough = True
+        else :
+            stockEnough = False
+            break;  
+    return stockEnough
+
+def checkIsCartEmpty(product : list):
+    if len(product) == 0:
+        return True
+    return False
+
+def getProductnotAvailable(product:list):
+    result =[]
+    for i in product:
+        if (i['count'] > i['stok']):
+            result.append(i['title'].title())
+    return ','.join(result)

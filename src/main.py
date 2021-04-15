@@ -7,11 +7,13 @@ import market
 import profile
 import utilities
 import cart
+import payment
 
 # Controller Functions
 import authController
 import marketController
 import cartController
+import paymentController
 
 sg.theme('LightGrey3')
 
@@ -23,8 +25,8 @@ if(not utilities.is_docker()):
 else:
     windowWidth, windowHeight = 1366, 768
 
-loginScreen, registerScreen, marketScreen, profileScreen, cartScreen = auth.loginDisplay(
-    windowWidth, windowHeight), None, None, None, None
+loginScreen, registerScreen, marketScreen, profileScreen, cartScreen, paymentScreen = auth.loginDisplay(
+    windowWidth, windowHeight), None, None, None, None, None
 
 cardKey = []
 searchResult = []
@@ -185,4 +187,23 @@ while True:
                 str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
             window[f'HARGATOTAL {event[1]}'].update(str(int(
                 window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
+        elif event[0] == 'Checkout':
+            if (not cartController.checkIsCartEmpty(cartController.getCartProduct(user))):
+                canCheckout = cartController.addOrderFromCart(user)
+                if (canCheckout):
+                    totalPrice = paymentController.getTotalPrice(user)
+                    paymentController.addPaymentFromOrder(user)
+                    cartScreen.close()
+                    paymentScreen = payment.paymentDisplay(windowWidth,windowHeight,totalPrice)
+                else :
+                    sg.Popup("Stok Tanaman " + cartController.getProductnotAvailable(cartController.getCartProduct(user)) + " Tidak cukup, Silahkan tunggu penjual melakukan Restock",title='Checkout Gagal',keep_on_top=True)
+            else :
+                sg.Popup('Cart masih kosong, silahkan mengisi cart terlebih dahulu',title ='Checkout Gagal',keep_on_top=True)
+
+    if window == paymentScreen:
+        if event == 'Pay':
+            paymentController.updatePayment(user)
+            paymentScreen.close()
+            marketScreen = market.marketDisplay(
+            windowWidth, windowHeight, [], False, {})
 window.close()
