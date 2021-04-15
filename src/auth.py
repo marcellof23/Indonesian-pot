@@ -13,7 +13,7 @@ def loginDisplay(windowWidth : int, windowHeight : int):
     bottomMargin = 250/1920 * windowHeight
     window = sg.Window('Login', layout, finalize=True, location=(-10, 0), size=(windowWidth,windowHeight),resizable=True, element_justification='c',margins=(0,int(bottomMargin)))
     window.maximize()
-    utilities.insertImage(500,500,window)
+    utilities.insertImage(500, 500, window)
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
     utilities.setPlaceholder(window["PASSWORD"], placeholderText="password")
     return window
@@ -33,11 +33,12 @@ def registerDisplay(windowWidth : int, windowHeight : int):
     bottomMargin = 250/1920 * windowHeight
     window = sg.Window('Register', layout, finalize=True, location=(-10, 0), resizable=True, size=(windowWidth,windowHeight),element_justification='c',margins=(0,int(bottomMargin)))
     window.maximize()
-    utilities.insertImage(500,500,window)
+    utilities.insertImage(500, 500, window)
     utilities.setPlaceholder(window["NAME"], placeholderText="your name")
     utilities.setPlaceholder(window["EMAIL"], placeholderText="e-mail address")
     utilities.setPlaceholder(window["PASSWORD"], placeholderText="password")
-    utilities.setPlaceholder(window["REPEATEDPASSWORD"], placeholderText="repeat password")
+    utilities.setPlaceholder(
+        window["REPEATEDPASSWORD"], placeholderText="repeat password")
     utilities.setPlaceholder(window["PHONE"], placeholderText="phone number")
     utilities.setPlaceholder(window["ADDRESS"], placeholderText="address")
     return window
