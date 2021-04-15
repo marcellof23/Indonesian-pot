@@ -25,13 +25,8 @@ if(not utilities.is_docker()):
 else:
     windowWidth, windowHeight = 1366, 768
 
-<<<<<<< HEAD
 loginScreen, registerScreen, marketScreen, profileScreen, cartScreen, paymentScreen = auth.loginDisplay(
     windowWidth, windowHeight), None, None, None, None, None
-=======
-loginScreen, registerScreen, marketScreen, profileScreen, cartScreen = auth.loginDisplay(
-    windowWidth, windowHeight), None, None, None, None
->>>>>>> 3b16e0f903fa6933cefaba3b454ca72741bb4c1d
 
 cardKey = []
 searchResult = []
