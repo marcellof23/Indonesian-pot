@@ -13,6 +13,7 @@ import payment
 import authController
 import marketController
 import cartController
+import paymentController
 
 sg.theme('LightGrey3')
 
@@ -167,13 +168,22 @@ while True:
             status = cartController.addCartProduct(user["_id"], event[1])
             window[f'COUNT {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) + 1))
             window[f'HARGATOTAL {event[1]}'].update(str(int(window[f'COUNT {event[1]}'].DisplayText) * int(window[f'HARGA {event[1]}'].DisplayText)))
-        elif event[0] == 'CHECKOUT':
-            cartScreen.close()
-            paymentScreen = payment.paymentDisplay(windowWidth,windowHeight,user)
+        elif event[0] == 'Checkout':
+            if (not cartController.checkIsCartEmpty(cartController.getCartProduct(user))):
+                canCheckout = cartController.addOrderFromCart(user)
+                if (canCheckout):
+                    totalPrice = paymentController.getTotalPrice(user)
+                    paymentController.addPaymentFromOrder(user)
+                    cartScreen.close()
+                    paymentScreen = payment.paymentDisplay(windowWidth,windowHeight,totalPrice)
+                else :
+                    sg.Popup("Stok Tanaman " + cartController.getProductnotAvailable(cartController.getCartProduct(user)) + " Tidak cukup, Silahkan tunggu penjual melakukan Restock",title='Checkout Gagal',keep_on_top=True)
+            else :
+                sg.Popup('Cart masih kosong, silahkan mengisi cart terlebih dahulu',title ='Checkout Gagal',keep_on_top=True)
 
     if window == paymentScreen:
-        print(event)
         if event == 'Pay':
+            paymentController.updatePayment(user)
             paymentScreen.close()
             marketScreen = market.marketDisplay(
             windowWidth, windowHeight, [], False, {})
