@@ -25,8 +25,8 @@ def makeTanamanDetail(data):
 
 
 def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailData):
-    layout1 = [[sg.Image(key="-IMAGE-", size=(20, 20)),
-                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.ButtonMenu('Kategori', ['Unused', ['Tanaman Hias', 'Tanaman Obat', 'Tanaman Langka']], k="KATEGORI"), sg.Button('Store'), sg.Button('Cart'), sg.Button('Profile')]]
+    layout1 = [[sg.Image(key="-IMAGE-", size=(20, 20), background_color=None),
+                sg.Input(k='QUERY', do_not_clear=True), sg.Button('Search'), sg.ButtonMenu('Kategori', ['Unused', ['Tanaman Hias', 'Tanaman Obat', 'Tanaman Langka']], k="KATEGORI", button_color="#83D0C9"), sg.Button('Store', button_color="#35a79c"), sg.Button('Cart', button_color="#83D0C9"), sg.Button('Profile', button_color="#83D0C9")]]
 
     layout2 = [[sg.Text('List Tanaman', background_color='white')], [
         sg.Text(size=(50, 1), k='ERRORMSG', pad=(0, 0), background_color='white')]]
@@ -55,9 +55,9 @@ def marketDisplay(windowWidth: int, windowHeight: int, data, isDetail, detailDat
     container_layout2 += [list_layout2]
     layout2 += container_layout2
     layout = [[sg.Column(layout1, key='HEADER', background_color='#ccffff',
-                         size=(windowWidth, (windowHeight/1080)*200), pad=(0, 0))],
+                         size=(windowWidth, (windowHeight/1080)*200), pad=(0, 0),)],
               [sg.Column(layout2, key='BODY', background_color='white',
-                         size=(windowWidth, windowHeight-(windowHeight/1080)*200), pad=(0, 0))]]
+                         size=(windowWidth, windowHeight-(windowHeight/1080)*200), pad=(0, 0), scrollable=True)]]
     window = sg.Window('Market', layout, margins=(0, 0), finalize=True, size=(
         windowWidth, windowHeight), location=(-10, 0))
     utilities.insertImage(500, 500, window)
