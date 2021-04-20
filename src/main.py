@@ -68,6 +68,7 @@ while True:
                 elif(response == "EMAILALREADYREGISTERED"):
                     window['ERRORMSG'].update(response)
                 else:
+                    user = response
                     registerScreen.close()
                     marketScreen = market.marketDisplay(
                         windowWidth, windowHeight, [], False, {})
@@ -194,16 +195,19 @@ while True:
                     totalPrice = paymentController.getTotalPrice(user)
                     paymentController.addPaymentFromOrder(user)
                     cartScreen.close()
-                    paymentScreen = payment.paymentDisplay(windowWidth,windowHeight,totalPrice)
-                else :
-                    sg.Popup("Stok Tanaman " + cartController.getProductnotAvailable(cartController.getCartProduct(user)) + " Tidak cukup, Silahkan tunggu penjual melakukan Restock",title='Checkout Gagal',keep_on_top=True)
-            else :
-                sg.Popup('Cart masih kosong, silahkan mengisi cart terlebih dahulu',title ='Checkout Gagal',keep_on_top=True)
+                    paymentScreen = payment.paymentDisplay(
+                        windowWidth, windowHeight, totalPrice)
+                else:
+                    sg.Popup("Stok Tanaman " + cartController.getProductnotAvailable(cartController.getCartProduct(user)) +
+                             " Tidak cukup, Silahkan tunggu penjual melakukan Restock", title='Checkout Gagal', keep_on_top=True)
+            else:
+                sg.Popup('Cart masih kosong, silahkan mengisi cart terlebih dahulu',
+                         title='Checkout Gagal', keep_on_top=True)
 
     if window == paymentScreen:
         if event == 'Pay':
             paymentController.updatePayment(user)
             paymentScreen.close()
             marketScreen = market.marketDisplay(
-            windowWidth, windowHeight, [], False, {})
+                windowWidth, windowHeight, [], False, {})
 window.close()
