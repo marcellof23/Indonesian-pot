@@ -3,8 +3,7 @@ image: python:3.9.1
 build-job:
   stage: build
   script:
-    - echo $DOTENV_STAGE
-    - echo $CI_PROJECT_DIR/.env
+    - cp $DOTENV_STAGE $CI_PROJECT_DIR/.env
     - echo "Hello, $GITLAB_USER_LOGIN!"
     - pip3 install pipenv
     - pipenv install --ignore-pipfile
@@ -14,6 +13,7 @@ build-job:
 test-job1:
   stage: test
   script:
+    - cp $DOTENV_STAGE $CI_PROJECT_DIR/.env
     - pip3 install pipenv
     - pipenv install --ignore-pipfile
     - pipenv run pytest src
