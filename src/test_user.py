@@ -2,30 +2,30 @@ import pytest
 import sys
 import os
 from authController import loginAuthController
-from marketController import searchProductByTitleController, searchProductByCategoryController
+from authController import registerAuthController
 
 
 class TestUser:
-    def test_one(self):
+    def test_login_one(self):
         user = loginAuthController("adm", "123")
-        assert 1 == 1
+        assert str(user["_id"]) == "60755ceaad36fc8351af484b"
 
-    def test_two(self):
-        x = "hello"
-        assert "e" in x
+    def test_login_two(self):
+        user = loginAuthController(
+            "13519079@std.stei.itb.ac.id", "noobmaster123")
+        assert str(
+            user["_id"]) == "6074302706c2945460aed695" and user["nama"] == "Jesson Yo"
 
-    def test_marketOne(self):
-        product = searchProductByTitleController("eceng")
-        assert product[0]['title'] == "eceng gondok"
+    def test_login_three(self):
+        user = loginAuthController("adm", "1234")
+        assert user == None
 
-    def test_marketTwo(self):
-        product = searchProductByTitleController("haha")
-        assert len(product) == 0
+    def test_register_one(self):
+        response = registerAuthController("Jesson Yo", "13519079@std.stei.itb.ac.id",
+                                          "kaoskakifiraun", "kaoskakifiraun", "081311111111", "Beverly Hills A207")
+        assert response == "EMAILALREADYREGISTERED"
 
-    def test_marketThree(self):
-        product = searchProductByCategoryController("Tanaman Hias")
-        assert product[1]['title'] == "kaktus"
-
-    def test_marketFour(self):
-        product = searchProductByTitleController("Tanaman Langka")
-        assert len(product) == 0
+    def test_register_two(self):
+        response = registerAuthController("Jesson Yo", "13519079@std.stei.itb.ac.id",
+                                          "kaoskakifiraun", "gajahmada", "081311111111", "Beverly Hills A207")
+        assert response == "PASSNOTMATCH"
