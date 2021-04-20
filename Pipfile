@@ -11,6 +11,7 @@ pyinstaller = "*"
 pymongo = {extras = ["srv"], version = "*"}
 python-dotenv = "*"
 pillow = "*"
+pytest = "*"
 
 [dev-packages]
 pytest = "*"
