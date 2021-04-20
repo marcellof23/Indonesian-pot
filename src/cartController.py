@@ -107,3 +107,12 @@ def getProductnotAvailable(product:list):
         if (i['count'] > i['stok']):
             result.append(i['title'].title())
     return ','.join(result)
+
+def clearProductFromCart(user : dict):
+    cart = carts.find_one({"userId" : user['_id']})
+    items = cart["item"]
+    for item in items:
+        stoktanaman = product.find_one({"_id":item["itemId"]})['stok'] - item['count']
+        product.find_one_and_update({"_id":item["itemId"]}, {'$set' : {"stok" : stoktanaman}})
+    items = []
+    carts.find_one_and_update({"userId":user['_id']}, {'$set': {'item' : items}})
