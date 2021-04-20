@@ -3,6 +3,7 @@ import sys
 import os
 from authController import loginAuthController
 from authController import registerAuthController
+from authController import logoutAuthController
 
 
 class TestUser:
@@ -26,6 +27,12 @@ class TestUser:
         assert response == "EMAILALREADYREGISTERED"
 
     def test_register_two(self):
-        response = registerAuthController("Jesson Yo", "13519079@std.stei.itb.ac.id",
-                                          "kaoskakifiraun", "gajahmada", "081311111111", "Beverly Hills A207")
+        response = registerAuthController("Jesson Yo","13519079@std.stei.itb.ac.id","kaoskakifiraun","gajahmada","081311111111","Beverly Hills A207")
         assert response == "PASSNOTMATCH"
+    def test_logout_one(self):
+        response = logoutAuthController(None)
+        assert response == "ALREADYLOGGEDOUT"
+    def test_logout_two(self):
+        user = loginAuthController("adm","123")
+        response = logoutAuthController(user)
+        assert response == None
