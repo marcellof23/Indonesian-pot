@@ -153,6 +153,7 @@ while True:
 
     if window == profileScreen:
         if event == 'Logout':
+            user = authController.logoutAuthController(user)
             profileScreen.close()
             loginScreen = auth.loginDisplay(windowWidth, windowHeight)
         elif event == 'Store':

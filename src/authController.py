@@ -31,3 +31,9 @@ def registerAuthController(name: str, email: str, password: str, repeatedpasswor
             return {"nama": name, "email": email, "telp": phonenumber, "alamat": address}
     else:
         return "PASSNOTMATCH"
+
+def logoutAuthController(user):
+    if(user):
+        return None
+    else:
+        return "ALREADYLOGGEDOUT"
