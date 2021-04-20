@@ -1,6 +1,9 @@
 import pytest
 
-def test_answer():
-    a = 5
-    b = 10
-    assert a+b==15
+class TestUser:
+    def test_one(self):
+        x = "this"
+        assert "h" in x
+    def test_two(self):
+        x = "hello"
+        assert "e" in x
