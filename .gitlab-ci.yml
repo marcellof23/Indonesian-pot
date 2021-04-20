@@ -14,7 +14,7 @@ test-job1:
   script:
     - pip3 install pipenv
     - pipenv install --ignore-pipfile
-    - pytest src
+    - pipenv run pytest src
 
 deploy-prod:
   stage: deploy
