@@ -4,6 +4,7 @@ import os
 from dotenv import load_dotenv
 import copy
 from bson import ObjectId
+import cartController
 
 load_dotenv()
 
@@ -37,14 +38,8 @@ def addPaymentFromOrder(user : dict):
     for i in x:
         objectIdList.append(i['_id'])
     payment.insert_one({"listOrderObjectId":objectIdList,"nominal":getTotalPrice(user)+10000,"status":"belum dibayar"})
-    
-    cart = carts.find_one({"userId" : user['_id']})
-    items = cart["item"]
-    for item in items:
-        stoktanaman = product.find_one({"_id":item["itemId"]})['stok'] - item['count']
-        product.find_one_and_update({"_id":item["itemId"]}, {'$set' : {"stok" : stoktanaman}})
-    items = []
-    carts.find_one_and_update({"userId":user['_id']}, {'$set': {'item' : items}})
+    cartController.clearProductFromCart(user)
+
 
 
 def updatePayment(user : dict):
