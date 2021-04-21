@@ -11,7 +11,7 @@ def makeTanamanCard(data, i, windowWidth, windowHeight):
 def makeTanamanDetail(data):
     imgData = bytes(data["imageData"], 'utf-8')
     key = data["_id"]
-    return [[sg.Button(button_text=data['title'], image_data=imgData, image_subsample=8)],
+    return [[sg.Button(button_text='', image_data=imgData, image_subsample=8)],
             [sg.Text(data['title'], background_color="white")],
             [sg.Text(data['harga'], background_color="white")],
             [sg.Text(data['deskripsi'], background_color="white"), ],
