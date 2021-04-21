@@ -17,7 +17,7 @@ _mailinglist
 .idea/
 docs/_build/
 .vscode
-
+src/output/fold
 # Coverage reports
 htmlcov/
 .coverage
