@@ -32,8 +32,6 @@ def registerAuthController(name: str, email: str, password: str, repeatedpasswor
             x = users.find_one(
                 {"email": email, "password": sha256(password.encode()).hexdigest()})
             cart.insert_one({"userId": x["_id"], "item": []})
-            x = users.find_one(
-                {"email": email, "password": sha256(password.encode()).hexdigest()})
             return x
     else:
         return "PASSNOTMATCH"
