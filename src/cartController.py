@@ -81,7 +81,7 @@ def addOrderFromCart(user : dict):
             z.append(y)
     if (checkIsStockEnough(z)):
         for j in z:
-            if (not order.find_one({"idPenjual":j["userID"], "status" : "belum dibayar"})):
+            if (not order.find_one({"idPenjual":j["userID"],"idPembeli":user["_id"], "status" : "belum dibayar"})):
                 order.insert_one({"idPembeli":user["_id"], "idPenjual":j["userID"], "alamat":user['alamat'], "status":"belum dibayar", "metode":"online"})
         
     return checkIsStockEnough(z)
