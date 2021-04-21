@@ -10,6 +10,7 @@ client = pymongo.MongoClient("mongodb+srv://IndonesiaPot:" + DATABASE_PASSWORD +
                              "@cluster0.zaqu6.mongodb.net/pot?retryWrites=true&w=majority")
 db = client.pot
 users = db.users
+cart = db.cart
 
 
 def loginAuthController(email: str, password: str):
@@ -26,9 +27,14 @@ def registerAuthController(name: str, email: str, password: str, repeatedpasswor
         if(user):
             return "EMAILALREADYREGISTERED"
         else:
-            x = users.insert_one({"nama": name, "email": email, "password": sha256(
+            users.insert_one({"nama": name, "email": email, "password": sha256(
                 password.encode()).hexdigest(), "telp": phonenumber, "alamat": address})
-            return {"nama": name, "email": email, "telp": phonenumber, "alamat": address}
+            x = users.find_one(
+                {"email": email, "password": sha256(password.encode()).hexdigest()})
+            cart.insert_one({"userId": x["_id"], "item": []})
+            x = users.find_one(
+                {"email": email, "password": sha256(password.encode()).hexdigest()})
+            return x
     else:
         return "PASSNOTMATCH"
 
