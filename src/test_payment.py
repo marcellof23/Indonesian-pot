@@ -10,10 +10,14 @@ from marketController import searchProductByTitleController, searchProductByCate
 
 class TestPayment:
     def test_paymentOne(self):
+        status = "FALSE"
         user = loginAuthController("test", "test")
         product = searchProductByTitleController("kaktus")
         addProductToCart(user['_id'], product[0]['_id'], 2)
         totalPrice = getTotalPrice(user)
-        assert totalPrice == 100000
+        if(totalPrice == 100000) :
+            status = "TRUE"
         reduceCartProduct(user['_id'], product[0]['_id'])
         reduceCartProduct(user['_id'], product[0]['_id'])
+        assert status == "TRUE"
+        
